@@ -159,6 +159,54 @@ app.get('/imc', (req, res, next) => {
     }
 });
 
+app.get('/lados', (req, res, next) => {
+    try {
+        const { num1, num2, num3, num4} = req.query;
+
+        
+        
+
+        // Verifica o valor do parâmetro 'operation' recebido
+        console.log(`numero1: '${num1}'`);
+        console.log(`numero2: '${num2}'`);
+        console.log(`numero3: '${num3}'`);
+        console.log(`numero4: '${num4}'`);
+        
+        // Verifica se todos os parâmetros estão presentes
+        if (num1 === undefined || num2 === undefined || num3 === undefined || num4 === undefined) {
+            throw new Error('Parâmetros insuficientes!');
+        }
+
+        // Converte os parâmetros para números
+        const number1 = parseInt(num1);
+        const number2 = parseInt(num2);
+        const number3 = parseInt(num3);
+        const number4 = parseInt(num4);
+
+
+        // Verifica se os parâmetros são números válidos
+        if (isNaN(number1) || isNaN(number2) || isNaN(number3) || isNaN(number4)) {
+            throw new Error('Parâmetros inválidos!');
+        }
+
+        let result;
+        let area;
+
+        // Realiza a operação baseada no parâmetro 'operation'
+        if (number1 == number2 && number2 == number3 && number3 == number4) {
+            area = number1 * number2;
+        } else  if((number1 == number2) && (number3 == number4)){
+            area = number1 * number3;
+        } else {
+            throw new Error('Operação inválida!');
+        }
+
+        res.json({ result });
+    } catch (error) {
+        next(error); // Passa o erro para o middleware de tratamento
+    }
+});
+
 // Middleware de tratamento de erros
 app.use((err, req, res, next) => {
     console.error(err.stack); // Log do erro
